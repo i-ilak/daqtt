@@ -1,0 +1,13 @@
+compilation_database_dir: build/cmake
+output_directory: diagrams
+diagrams:
+  daqtt_class:
+    type: class
+    glob:
+      - src/*.cpp
+    include:
+      namespaces:
+        - daqtt
+    exclude:
+      elements:
+        - daqtt::Callback

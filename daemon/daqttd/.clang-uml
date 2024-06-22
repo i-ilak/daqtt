@@ -1,0 +1,15 @@
+compilation_database_dir: build/cmake
+output_directory: diagrams
+diagrams:
+  subscriber_sequence:
+    type: sequence
+    glob:
+      - main.cpp
+      - ../../../../libraries/daqtt/src/*.cpp
+    include:
+      namespaces:
+        - daqtt
+        - mqtt
+    from_to:
+      - [function: "main()",
+         function: "to_cout(const std::string &, const std::string &)"]
