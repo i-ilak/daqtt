@@ -1,0 +1,51 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    volumes:
+      - ./deps/mqtt_broker/config:/mosquitto/config
+      - ./deps/mqtt_broker/data:/mosquitto/data
+      - ./deps/mqtt_broker/log:/mosquitto/log
+    ports:
+      - 1883:1883
+      - 9001:9001
+    stdin_open: true
+    tty: true
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    volumes:
+      - ./deps/influxdb2/config:/etc/influxdb2
+      - ./deps/influxdb2/data:/var/lib/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=please_change_this_password_once_you_have_access
+      - DOCKER_INFLUXDB_INIT_ORG=daqtt_org
+      - DOCKER_INFLUXDB_INIT_BUCKET=daqtt
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=$INFLUXDB_INIT_TOKEN
+  daqttd:
+    image: daqttd:latest
+    container_name: daqttd
+    restart: always
+    build:
+      context: ./daqttd
+      dockerfile: Dockerfile
+      args:
+        - INFLUXDB_INIT_TOKEN=$INFLUXDB_INIT_TOKEN
+        - MOSQUITTO_USERNAME=$MOSQUITTO_USERNAME
+        - MOSQUITTO_PASSWORD=$MOSQUITTO_PASSWORD
+      target: final 
+    depends_on:
+      mosquitto:
+        condition: service_started
+      influxdb:
+        condition: service_started
+
+networks:
+  daqtt-net:
+    driver: bridge
+    name: daqtt-net

@@ -4,7 +4,7 @@
 #include "influxdb.hpp"
 
 influxdb_cpp::server_info
-    si("127.0.0.1", 8086, "daqtt_org",
+    si("influxdb", 8086, "daqtt_org",
        "@@INFLUXDB_INIT_TOKEN@@",
        "daqtt");
 
@@ -18,7 +18,7 @@ void to_cout(const std::string &topic, const std::string &message) {
   auto ret = influxdb_cpp::builder()
                  .meas(topic)
                  .field("data", data)
-                 .timestamp(timestamp)
+                 // .timestamp(timestamp)
                  .post_http(si, &resp);
   // std::cout << "Topic:\t" << topic << "\t Message:\t" << message
   //           << "\tResponse:\t" << ret << ";\t" << resp << "\n";
@@ -26,13 +26,12 @@ void to_cout(const std::string &topic, const std::string &message) {
 
 int main() {
   const daqtt::ConnectionDescriptor connectionBroker = {
-      // .address = "tcp://192.168.1.62:1883",
-      .address = "tcp://localhost:1883",
+      .address = "tcp://mosquitto:1883",
       .clientId = "daq_zmq_subscribder",
       .max_buffered_messages = 120,
       .period = std::chrono::seconds(5),
-      .username = "fhnw",
-      .password = "fhnw",
+      .username = "@@MOSQUITTO_USERNAME@@",
+      .password = "@@MOSQUITTO_PASSWORD@@",
   };
 
   daqtt::Subscriber subscriber(connectionBroker, to_cout, "#");
