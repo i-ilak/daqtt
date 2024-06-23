@@ -1,0 +1,17 @@
+name: Build Docker Image
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build daqttd Docker Image
+      run: |
+          docker build .                                 \
+              --file daemon/daqttd/Dockerfile            \
+              --build-arg INFLUXDB_INIT_TOKEN=pipeline   \
+              --build-arg MOSQUITTO_USERNAME=pipeline    \
+              --build-arg MOSQUITTO_PASSWORD=pipeline    \
+              --tag pipeline:$(date +%s)
