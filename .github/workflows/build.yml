@@ -3,11 +3,11 @@ name: Build Docker Image
 on: [push, pull_request]
 
 jobs:
-  build:
+  daqttd-container:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Build daqttd Docker Image
+    - name: daqttd Docker Image
       run: |
           docker build .                                 \
               --file daemon/daqttd/Dockerfile            \
@@ -15,3 +15,38 @@ jobs:
               --build-arg MOSQUITTO_USERNAME=pipeline    \
               --build-arg MOSQUITTO_PASSWORD=pipeline    \
               --tag pipeline:$(date +%s)
+  example-sinus:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Cache Conan Dependencies
+      id: cache-conan
+      uses: actions/cache@v2
+      with:
+        path: /root/.conan2
+        key: ${{ runner.os }}-conan-${{ hashFiles('**/conanfile.txt') }}
+    - name: Install conan
+      run: pip install conan && conan profile detect
+    - name: Create default Conan profile
+      if: steps.cache-conan.outputs.cache-hit != 'true'
+      run: conan profile detect --force
+    - name: Install dependencies
+      run: cd examples/sinus && conan install . -pr:a=default --build=missing -of=/home/runner/.conan2/project
+    - name: Install libdaqtt 
+      run: |
+        cd daemon/lib/daqtt && \
+        cmake -S . \
+              -B build \
+              -DCMAKE_TOOLCHAIN_FILE=/home/runner/.conan2/project/build/Release/generators/conan_toolchain.cmake \
+              -DCMAKE_BUILD_TYPE=Release          && \
+        cmake --build build                       && \
+        sudo cmake --build build --target install
+    - name: CMake generate
+      run: |
+        cd examples/sinus && \
+        cmake -S . \
+              -B build \
+              -DCMAKE_TOOLCHAIN_FILE=/home/runner/.conan2/project/build/Release/generators/conan_toolchain.cmake \
+              -DCMAKE_BUILD_TYPE=Release
+    - name: CMake build
+      run: cd examples/sinus && cmake --build build
