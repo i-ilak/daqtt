@@ -31,13 +31,13 @@ jobs:
       if: steps.cache-conan.outputs.cache-hit != 'true'
       run: conan profile detect --force
     - name: Install dependencies
-      run: cd examples/sinus && conan install . -pr:a=default --build=missing -of=/root/.conan2/project
+      run: cd examples/sinus && conan install . -pr:a=default --build=missing -of=/home/runner/.conan2/project
     - name: CMake generate
       run: |
         cd examples/sinus && \
         cmake -S . \
               -B build \
-              -DCMAKE_TOOLCHAIN_FILE=/root/.conan2/project/build/Release/generators/conan_toolchain.cmake \
+              -DCMAKE_TOOLCHAIN_FILE=/home/runner/.conan2/project/build/Release/generators/conan_toolchain.cmake \
               -DCMAKE_BUILD_TYPE=Release
     - name: CMake build
       run: cd examples/sinus && cmake --build build
