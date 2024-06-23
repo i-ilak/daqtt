@@ -26,7 +26,7 @@ jobs:
         path: /root/.conan2
         key: ${{ runner.os }}-conan-${{ hashFiles('**/conanfile.txt') }}
     - name: Install conan
-      run: pip install conan && conan profile --detect
+      run: pip install conan && conan profile detect
     - name: Create default Conan profile
       if: steps.cache-conan.outputs.cache-hit != 'true'
       run: conan profile new default --detect
