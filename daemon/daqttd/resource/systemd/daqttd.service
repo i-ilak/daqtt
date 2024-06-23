@@ -1,0 +1,15 @@
+[Unit]
+Description=Simple daemon template
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/daemon-template --config /etc/daemon-template/daemon-template.conf
+ExecReload=/bin/kill -HUP $MAINPID
+User=root
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=daemon-template
+
+[Install]
+WantedBy=multi-user.target

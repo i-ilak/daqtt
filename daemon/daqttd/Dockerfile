@@ -16,7 +16,8 @@ RUN apt-get update &&                               \
                         python3-venv                \
                         unzip                       \
                         curl                        \
-                        git
+                        git                         \
+                        libconfig++-dev
 
 FROM dev-tools AS environment
 RUN mkdir -p /project
@@ -28,7 +29,7 @@ ENV CONAN_HOME="/project/conan2"
 RUN pip3 install conan && conan profile detect
 
 FROM environment AS setup-project
-RUN git clone https://github.com/i-ilak/daqtt.git
+RUN git clone -b feature/proper_linux_daemon https://github.com/i-ilak/daqtt.git
 
 FROM setup-project AS libdaqtt
 WORKDIR /project/daqtt/daemon/lib/daqtt
