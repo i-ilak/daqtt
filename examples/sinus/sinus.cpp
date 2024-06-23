@@ -2,6 +2,7 @@
 #include <daqtt/daqtt.h>
 
 #include <iostream>
+#include <cmath>
 #include <numbers>
 #include <thread>
 #include <vector>
