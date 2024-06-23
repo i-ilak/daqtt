@@ -40,7 +40,7 @@ jobs:
               -DCMAKE_TOOLCHAIN_FILE=/home/runner/.conan2/project/build/Release/generators/conan_toolchain.cmake \
               -DCMAKE_BUILD_TYPE=Release          && \
         cmake --build build                       && \
-        cmake --build build --target install
+        sudo cmake --build build --target install
     - name: CMake generate
       run: |
         cd examples/sinus && \
