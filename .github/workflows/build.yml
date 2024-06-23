@@ -32,6 +32,15 @@ jobs:
       run: conan profile detect --force
     - name: Install dependencies
       run: cd examples/sinus && conan install . -pr:a=default --build=missing -of=/home/runner/.conan2/project
+    - name: Install libdaqtt 
+      run: |
+        cd daemon/lib/daqtt && \
+        cmake -S . \
+              -B build \
+              -DCMAKE_TOOLCHAIN_FILE=/home/runner/.conan2/project/build/Release/generators/conan_toolchain.cmake \
+              -DCMAKE_BUILD_TYPE=Release          && \
+        cmake --build build                       && \
+        cmake --build build --target install
     - name: CMake generate
       run: |
         cd examples/sinus && \
