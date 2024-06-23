@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
 
   daqtt::Subscriber subscriber(connectionBroker, to_cout, "#");
 
-  while (std::tolower(std::cin.get()) != 'q')
+  while (daemon.IsRunning())
     ;
 
   LOG_INFO("The daemon process ended gracefully.");

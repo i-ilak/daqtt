@@ -1,15 +1,15 @@
 [Unit]
-Description=Simple daemon template
+Description=DAQTT daemon
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/daemon-template --config /etc/daemon-template/daemon-template.conf
+ExecStart=/usr/bin/daqttd --config /etc/daqttd/daqttd.conf
 ExecReload=/bin/kill -HUP $MAINPID
 User=root
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=daemon-template
+SyslogIdentifier=daqttd
 
 [Install]
 WantedBy=multi-user.target

@@ -31,27 +31,18 @@ RUN pip3 install conan && conan profile detect
 FROM environment AS setup-project
 RUN git clone -b feature/proper_linux_daemon https://github.com/i-ilak/daqtt.git
 
-FROM setup-project AS libdaqtt
-WORKDIR /project/daqtt/daemon/lib/daqtt
-RUN conan install conan -pr:a=default --build=missing -of=$CONAN_HOME/project/lib/daqtt
+FROM setup-project AS daqttd
+WORKDIR /project/daqtt/daemon/daqttd/
+RUN sed -i "s/@@MOSQUITTO_PASSWORD@@/$MOSQUITTO_PASSWORD/g" src/main.cpp
+RUN sed -i "s/@@MOSQUITTO_USERNAME@@/$MOSQUITTO_USERNAME/g" src/main.cpp
+RUN sed -i "s/@@INFLUXDB_INIT_TOKEN@@/$INFLUXDB_INIT_TOKEN/g" src/main.cpp
+RUN conan install conan -pr:a=default --build=missing -of=$CONAN_HOME/project/daqtt
 RUN cmake   -S .                                                                                            \
             -B build/cmake                                                                                  \
             -DCMAKE_BUILD_TYPE=Release                                                                      \
-            -DCMAKE_TOOLCHAIN_FILE=$CONAN_HOME/project/lib/daqtt/build/Release/generators/conan_toolchain.cmake
-RUN cmake --build build/cmake
+            -DCMAKE_TOOLCHAIN_FILE=$CONAN_HOME/project/daqtt/build/Release/generators/conan_toolchain.cmake
+RUN cmake --build build/cmake && cmake --build build/cmake --target install
 RUN cmake --build build/cmake --target install
 
-FROM libdaqtt AS daqtt
-WORKDIR /project/daqtt/daemon/daqttd/
-RUN sed -i "s/@@MOSQUITTO_PASSWORD@@/$MOSQUITTO_PASSWORD/g" main.cpp
-RUN sed -i "s/@@MOSQUITTO_USERNAME@@/$MOSQUITTO_USERNAME/g" main.cpp
-RUN sed -i "s/@@INFLUXDB_INIT_TOKEN@@/$INFLUXDB_INIT_TOKEN/g" main.cpp
-RUN cmake   -S .                                                                                            \
-            -B build/cmake                                                                                  \
-            -DCMAKE_BUILD_TYPE=Release                                                                      \
-            -DCMAKE_TOOLCHAIN_FILE=$CONAN_HOME/project/lib/daqtt/build/Release/generators/conan_toolchain.cmake
-RUN cmake --build build/cmake
-# RUN cmake --build build/cmake --target install
-
-FROM daqtt AS final
-CMD ["/project/daqtt/daemon/daqttd/build/cmake/daqttd"]
+FROM daqttd AS final
+CMD ["daqttd"]

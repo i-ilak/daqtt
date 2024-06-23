@@ -1,8 +1,8 @@
-#include "sender.h"
+#include "daqtt/sender.h"
 
-#include "connection_descriptor.h"
-#include "connector.h"
-#include "utils.h"
+#include "daqtt/connection_descriptor.h"
+#include "daqtt/connector.h"
+#include "daqtt/utils.h"
 #include <algorithm>
 #include <chrono>
 #include <unordered_map>
