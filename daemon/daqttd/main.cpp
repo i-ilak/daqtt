@@ -18,7 +18,7 @@ void to_cout(const std::string &topic, const std::string &message) {
   auto ret = influxdb_cpp::builder()
                  .meas(topic)
                  .field("data", data)
-                 // .timestamp(timestamp)
+                 .timestamp(timestamp)
                  .post_http(si, &resp);
   // std::cout << "Topic:\t" << topic << "\t Message:\t" << message
   //           << "\tResponse:\t" << ret << ";\t" << resp << "\n";
