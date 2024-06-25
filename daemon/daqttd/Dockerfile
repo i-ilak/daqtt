@@ -29,7 +29,7 @@ ENV CONAN_HOME="/project/conan2"
 RUN pip3 install conan && conan profile detect
 
 FROM environment AS setup-project
-RUN git clone -b feature/proper_linux_daemon https://github.com/i-ilak/daqtt.git
+RUN git clone https://github.com/i-ilak/daqtt.git
 
 FROM setup-project AS daqttd
 WORKDIR /project/daqtt/daemon/daqttd/
