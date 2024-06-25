@@ -1,6 +1,6 @@
-#include "subscriber.h"
-#include "connection_descriptor.h"
-#include "connector.h"
+#include "daqtt/subscriber.h"
+#include "daqtt/connection_descriptor.h"
+#include "daqtt/connector.h"
 #include <memory>
 #include <mqtt/async_client.h>
 #include <mqtt/connect_options.h>

@@ -1,9 +1,6 @@
 [requires]
-cppzmq/4.10.0
 paho-mqtt-cpp/1.2.0
-protobuf/3.21.9
-influxdb-cpp/cci.20240102
-spdlog/1.14.1
+libconfig/1.7.3
 
 [generators]
 CMakeDeps

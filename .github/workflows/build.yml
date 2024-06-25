@@ -30,14 +30,16 @@ jobs:
     - name: Create default Conan profile
       if: steps.cache-conan.outputs.cache-hit != 'true'
       run: conan profile detect --force
-    - name: Install dependencies
-      run: cd examples/sinus && conan install . -pr:a=default --build=missing -of=/home/runner/.conan2/project
+    - name: Install example dependencies
+      run: cd examples/sinus && conan install . -pr:a=default --build=missing -of=/home/runner/.conan2/project/sinus
+    - name: Install libdaqtt dependencies
+      run: cd daemon/daqttd && conan install conan -pr:a=default --build=missing -of=/home/runner/.conan2/project/daqtt
     - name: Install libdaqtt 
       run: |
-        cd daemon/lib/daqtt && \
+        cd daemon/daqttd && \
         cmake -S . \
               -B build \
-              -DCMAKE_TOOLCHAIN_FILE=/home/runner/.conan2/project/build/Release/generators/conan_toolchain.cmake \
+              -DCMAKE_TOOLCHAIN_FILE=/home/runner/.conan2/project/daqtt/build/Release/generators/conan_toolchain.cmake \
               -DCMAKE_BUILD_TYPE=Release          && \
         cmake --build build                       && \
         sudo cmake --build build --target install
@@ -46,7 +48,7 @@ jobs:
         cd examples/sinus && \
         cmake -S . \
               -B build \
-              -DCMAKE_TOOLCHAIN_FILE=/home/runner/.conan2/project/build/Release/generators/conan_toolchain.cmake \
+              -DCMAKE_TOOLCHAIN_FILE=/home/runner/.conan2/project/sinus/build/Release/generators/conan_toolchain.cmake \
               -DCMAKE_BUILD_TYPE=Release
     - name: CMake build
       run: cd examples/sinus && cmake --build build

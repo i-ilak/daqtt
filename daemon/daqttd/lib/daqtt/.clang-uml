@@ -1,4 +1,4 @@
-compilation_database_dir: build/cmake
+compilation_database_dir: build
 output_directory: diagrams
 diagrams:
   daqtt_class:

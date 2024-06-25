@@ -1,0 +1,15 @@
+[Unit]
+Description=DAQTT daemon
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/daqttd --config /etc/daqttd/daqttd.conf
+ExecReload=/bin/kill -HUP $MAINPID
+User=root
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=daqttd
+
+[Install]
+WantedBy=multi-user.target
