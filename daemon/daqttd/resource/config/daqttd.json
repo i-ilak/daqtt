@@ -1,0 +1,11 @@
+{
+    "mosquitto": {
+        "broker_ip": "mosquitto",
+        "broker_port": 1883,
+        "username": "daqtt",
+        "password": "daqtt"
+    },
+    "influxdb": {
+        "token": ""
+    }
+}

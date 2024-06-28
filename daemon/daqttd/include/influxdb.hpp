@@ -54,6 +54,7 @@ struct server_info {
   std::string bkt_;
   std::string tkn_;
   struct addrinfo hints_, *res_ = NULL;
+  server_info() = default;
   server_info(const std::string &host, int port, const std::string &org,
               const std::string &token, const std::string &bucket = "") {
     port_ = port;

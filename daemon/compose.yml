@@ -35,10 +35,10 @@ services:
       context: ./daqttd
       dockerfile: Dockerfile
       args:
-        - INFLUXDB_INIT_TOKEN=$INFLUXDB_INIT_TOKEN
-        - MOSQUITTO_USERNAME=$MOSQUITTO_USERNAME
-        - MOSQUITTO_PASSWORD=$MOSQUITTO_PASSWORD
-      target: final 
+        - BRANCH_NAME=main
+      target: final
+    volumes:
+      - ./daqttd/resource/config/daqttd.json:/etc/daqttd/daqttd.conf
     depends_on:
       mosquitto:
         condition: service_started
