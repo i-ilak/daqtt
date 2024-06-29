@@ -47,7 +47,7 @@ configToConnectionDescriptor(const rapidjson::Value &mosquitto) {
       "tcp://" + std::string(mosquitto["broker_ip"].GetString()) + ":" +
       std::to_string(mosquitto["broker_port"].GetInt());
   connectionBroker.username = mosquitto["username"].GetString();
-  connectionBroker.address = mosquitto["password"].GetString();
+  connectionBroker.password = mosquitto["password"].GetString();
   return connectionBroker;
 }
 
