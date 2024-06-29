@@ -1,6 +1,6 @@
 [requires]
 paho-mqtt-cpp/1.2.0
-libconfig/1.7.3
+rapidjson/cci.20230929
 
 [generators]
 CMakeDeps

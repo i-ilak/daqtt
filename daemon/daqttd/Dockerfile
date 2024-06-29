@@ -1,9 +1,6 @@
 FROM ubuntu:22.04 AS base
 
-ARG MOSQUITTO_PASSWORD
-ARG MOSQUITTO_USERNAME
-ARG INFLUXDB_INIT_TOKEN
-
+ARG BRANCH_NAME 
 
 FROM base as dev-tools
 RUN apt-get update &&                               \
@@ -29,13 +26,10 @@ ENV CONAN_HOME="/project/conan2"
 RUN pip3 install conan && conan profile detect
 
 FROM environment AS setup-project
-RUN git clone https://github.com/i-ilak/daqtt.git
+RUN git clone -b $BRANCH_NAME https://github.com/i-ilak/daqtt.git
 
 FROM setup-project AS daqttd
 WORKDIR /project/daqtt/daemon/daqttd/
-RUN sed -i "s/@@MOSQUITTO_PASSWORD@@/$MOSQUITTO_PASSWORD/g" src/main.cpp
-RUN sed -i "s/@@MOSQUITTO_USERNAME@@/$MOSQUITTO_USERNAME/g" src/main.cpp
-RUN sed -i "s/@@INFLUXDB_INIT_TOKEN@@/$INFLUXDB_INIT_TOKEN/g" src/main.cpp
 RUN conan install conan -pr:a=default --build=missing -of=$CONAN_HOME/project/daqtt
 RUN cmake   -S .                                                                                            \
             -B build/cmake                                                                                  \

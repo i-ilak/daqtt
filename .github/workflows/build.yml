@@ -1,5 +1,8 @@
 name: Build Docker Image
 
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
+
 on: [pull_request]
 
 jobs:
@@ -11,9 +14,7 @@ jobs:
       run: |
           docker build .                                 \
               --file daemon/daqttd/Dockerfile            \
-              --build-arg INFLUXDB_INIT_TOKEN=pipeline   \
-              --build-arg MOSQUITTO_USERNAME=pipeline    \
-              --build-arg MOSQUITTO_PASSWORD=pipeline    \
+              --build-arg BRANCH_NAME=$BRANCH_NAME       \
               --tag pipeline:$(date +%s)
   example-sinus:
     runs-on: ubuntu-latest

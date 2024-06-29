@@ -1,9 +1,5 @@
 find_package(PahoMqttCpp REQUIRED)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
-
-set(DEFAULT_BUILD_TYPE "Release")
-
 include(GNUInstallDirs)
 
 add_library(daqtt STATIC

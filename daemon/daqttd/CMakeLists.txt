@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 project(daqttd VERSION 1.0)
 
-find_package(libconfig REQUIRED)
+find_package(RapidJSON REQUIRED)
 
 add_subdirectory(lib)
 
@@ -14,8 +14,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 
 add_executable(daqttd src/main.cpp src/daemon.cpp)
 
-target_link_libraries(daqttd PRIVATE daqtt libconfig::libconfig)
+target_link_libraries(daqttd PRIVATE daqtt rapidjson)
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/resource/config/daqttd.conf DESTINATION /etc/daqttd)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/resource/systemd/daqttd.service DESTINATION /etc/systemd/system)
 install(TARGETS daqttd DESTINATION /usr/bin)

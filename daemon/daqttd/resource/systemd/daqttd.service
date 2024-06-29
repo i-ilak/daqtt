@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/daqttd --config /etc/daqttd/daqttd.conf
+ExecStart=/usr/bin/daqttd --config /etc/daqttd/daqttd.json
 ExecReload=/bin/kill -HUP $MAINPID
 User=root
 StandardOutput=syslog
