@@ -14,7 +14,7 @@ jobs:
       run: |
           docker build .                                 \
               --file daemon/daqttd/Dockerfile            \
-              --build-arg BRNACH_NAME=env.BRANCH_NAME    \
+              --build-arg BRNACH_NAME=$BRANCH_NAME       \
               --tag pipeline:$(date +%s)
   example-sinus:
     runs-on: ubuntu-latest
