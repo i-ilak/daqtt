@@ -39,4 +39,4 @@ RUN cmake --build build/cmake && cmake --build build/cmake --target install
 RUN cmake --build build/cmake --target install
 
 FROM daqttd AS final
-CMD ["daqttd"]
+CMD ["daqttd", "--config", "/etc/daqttd/daqttd.conf"]
