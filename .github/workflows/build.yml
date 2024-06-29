@@ -1,7 +1,7 @@
 name: Build Docker Image
 
 env:
- BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
 
 on: [pull_request]
 
@@ -14,7 +14,7 @@ jobs:
       run: |
           docker build .                                 \
               --file daemon/daqttd/Dockerfile            \
-              --build-arg BRNACH_NAME=$BRANCH_NAME       \
+              --build-arg BRANCH_NAME=$BRANCH_NAME       \
               --tag pipeline:$(date +%s)
   example-sinus:
     runs-on: ubuntu-latest
